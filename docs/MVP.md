@@ -15,7 +15,6 @@ Every item is written as a user story for the only actor, the **student**.
 **Value:** H = high, M = medium, L = low. **Effort:** story points (SP), Fibonacci scale.
 **Priority (MoSCoW):** Must / Should / Could / Won't (this release).
 
-<<<<<<< HEAD
 | ID    | As a student, I want to…                          | so that…                                    | Value | SP  | Priority |
 | ----- | ------------------------------------------------- | ------------------------------------------- | ----- | --- | -------- |
 | US-01 | add a task                                        | I know what I am going to work on           | H     | 2   | **Must** |
@@ -41,33 +40,6 @@ Every item is written as a user story for the only actor, the **student**.
 | US-21 | see statistics of past days                       | I can track my habits                       | M     | 5   | Won't    |
 | US-22 | sync data between devices with an account         | I can use phone and laptop                  | L     | 13  | Won't    |
 | US-23 | install the app and use it offline                | it works like a native app                  | L     | 3   | Won't    |
-=======
-| ID | As a student, I want to… | so that… | Value | SP | Priority |
-|---|---|---|---|---|---|
-| US-01 | add a task | I know what I am going to work on | H | 2 | **Must** |
-| US-02 | see my task list | I get an overview of my work | H | 2 | **Must** |
-| US-03 | mark a task as complete | I see my progress and the list stays short | H | 1 | **Must** |
-| US-04 | choose a task to work on | the session has a clear goal | H | 2 | **Must** |
-| US-05 | start a 25-minute focus timer | I can concentrate for a fixed time | H | 3 | **Must** |
-| US-06 | stop the timer (pause / reset) | I can handle interruptions | H | 1 | **Must** |
-| US-07 | switch to a break and back to focus automatically | I follow the Pomodoro rhythm without effort | H | 2 | **Must** |
-| US-08 | hear a sound when a session ends | I notice it without watching the screen | H | 1 | **Must** |
-| US-09 | still have my tasks and timer after a reload | I don't lose work when I close the tab | H | 3 | **Must** |
-| US-10 | edit a task title | I can fix typos | M | 1 | Should |
-| US-11 | delete a task | I can remove tasks added by mistake | M | 1 | Should |
-| US-12 | see how many pomodoros I spent on each task | I can judge my effort | M | 1 | Should |
-| US-13 | get a long break after 4 pomodoros | I rest properly, as the technique says | M | 1 | Should |
-| US-14 | get a desktop notification when a session ends | I notice it when the tab is hidden | M | 2 | Should |
-| US-15 | use the app with keyboard and screen reader | the app is accessible to everyone | M | 2 | Should |
-| US-16 | switch between focus / short / long break by hand | I can take a break early | L | 1 | Could |
-| US-17 | see the countdown in the browser tab title | I can check the time from another tab | L | 1 | Could |
-| US-18 | change the page background | the app feels personal | L | 5 | Could |
-| US-19 | read how the Pomodoro technique works | I use the app correctly | L | 1 | Could |
-| US-20 | set my own session lengths | the timer fits my rhythm | M | 3 | Won't |
-| US-21 | see statistics of past days | I can track my habits | M | 5 | Won't |
-| US-22 | sync data between devices with an account | I can use phone and laptop | L | 13 | Won't |
-| US-23 | install the app and use it offline | it works like a native app | L | 3 | Won't |
->>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
 
 ### Backlog analysis
 

@@ -42,7 +42,17 @@ const Notifier = (() => {
   function desktop(title, body) {
     if ('Notification' in window && Notification.permission === 'granted') {
       try {
-        new Notification(title, { body, tag: 'focustime' });
+        const n = new Notification(title, {
+          body,
+          tag: 'focustime', // replaces the previous alert instead of stacking
+          renotify: true, // …but still alerts again for the new session
+          icon: 'assets/favicon.svg',
+        });
+        // Clicking the notification brings the FocusTime tab back.
+        n.onclick = () => {
+          window.focus();
+          n.close();
+        };
       } catch {
         /* some mobile browsers only allow notifications via a service worker */
       }

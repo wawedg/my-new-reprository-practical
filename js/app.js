@@ -72,22 +72,21 @@
     saveState();
   }
 
-  function onTimerComplete(finished, next) {
-    Notifier.bell();
+  function onTimerComplete(finished, next, { restored }) {
+    // A session that ended while the page was closed still counts, but a bell
+    // or pop-up about it on page load would only be confusing.
+    const alert = restored ? () => {} : Notifier.desktop;
+    if (!restored) Notifier.bell();
     if (finished === 'focus') {
       if (activeTaskId && TaskStore.get(activeTaskId)) {
         TaskStore.addPomodoro(activeTaskId);
         renderTasks();
       }
-<<<<<<< HEAD
       const breakName = `${Timer.LABELS[next].toLowerCase()} (${Config.MINUTES[next]} min)`;
-=======
-      const breakName = next === 'long' ? 'long break (15 min)' : 'short break (5 min)';
->>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
-      Notifier.desktop('Pomodoro complete! ⏳', `Time for a ${breakName}.`);
+      alert('Pomodoro complete! ⏳', `Time for a ${breakName}.`);
       Notifier.announce(`Pomodoro complete. Time for a ${breakName}.`);
     } else {
-      Notifier.desktop('Break is over', 'Ready for the next pomodoro?');
+      alert('Break is over', 'Ready for the next pomodoro?');
       Notifier.announce('Break is over. Ready for the next pomodoro.');
     }
   }
