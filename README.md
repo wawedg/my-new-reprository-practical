@@ -26,5 +26,9 @@ js/app.js      controller – wires everything together
 docs/          architecture document and diagrams
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the architecture
-diagram, component responsibilities, interactions and design decisions.
+## Documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – architecture diagram, component
+  responsibilities, interactions and design decisions
+- [docs/MVP.md](docs/MVP.md) – product backlog, MVP definition and the plan for
+  the first iteration
