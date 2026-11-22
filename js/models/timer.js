@@ -13,7 +13,11 @@ const Timer = (() => {
     mode: 'focus',
     remainingMs: DURATIONS.focus,
     endsAt: null,
+<<<<<<< HEAD
+    cycleDone: 0, // focus sessions finished in the current cycle (0…LONG_EVERY)
+=======
     completedFocus: 0, // total focus sessions finished; drives the 4-cycle
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
   });
 
   function init(saved, handlers) {
@@ -21,7 +25,11 @@ const Timer = (() => {
     state = defaultState();
     if (saved && DURATIONS[saved.mode]) {
       state.mode = saved.mode;
+<<<<<<< HEAD
+      state.cycleDone = restoreCycle(saved);
+=======
       state.completedFocus = Number(saved.completedFocus) || 0;
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
       state.remainingMs = Math.min(
         Number(saved.remainingMs) || DURATIONS[saved.mode],
         DURATIONS[saved.mode]
@@ -39,6 +47,18 @@ const Timer = (() => {
     emitChange();
   }
 
+<<<<<<< HEAD
+  /* Accepts the current field and the older `completedFocus` total, so state
+     saved by earlier versions keeps its place in the cycle. */
+  function restoreCycle(saved) {
+    const n = Number(saved.cycleDone ?? saved.completedFocus) || 0;
+    if (n <= 0) return 0;
+    // A long break is only "owed" while we are in it; otherwise stay within the cycle.
+    return saved.mode === 'long' ? Math.min(n, LONG_EVERY) : n % LONG_EVERY;
+  }
+
+=======
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
   const isRunning = () => state.endsAt !== null;
   const remaining = () =>
     isRunning() ? Math.max(0, state.endsAt - Date.now()) : state.remainingMs;
@@ -80,9 +100,17 @@ const Timer = (() => {
     const finished = state.mode;
     let next;
     if (finished === 'focus') {
+<<<<<<< HEAD
+      state.cycleDone = (state.cycleDone % LONG_EVERY) + 1;
+      next = state.cycleDone === LONG_EVERY ? 'long' : 'short';
+    } else {
+      // A finished long break (automatic or picked by hand) starts a new cycle.
+      if (finished === 'long') state.cycleDone = 0;
+=======
       state.completedFocus += 1;
       next = state.completedFocus % LONG_EVERY === 0 ? 'long' : 'short';
     } else {
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
       next = 'focus';
     }
     state.mode = next;
@@ -116,7 +144,11 @@ const Timer = (() => {
   const getState = () => ({ ...state });
   const duration = (mode = state.mode) => DURATIONS[mode];
   // 1-based position of the current/next focus session within the 4-cycle.
+<<<<<<< HEAD
+  const cyclePosition = () => (state.cycleDone % LONG_EVERY) + 1;
+=======
   const cyclePosition = () => (state.completedFocus % LONG_EVERY) + 1;
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
 
   return {
     init, start, pause, reset, setMode,
