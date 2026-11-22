@@ -1,12 +1,34 @@
-# my-new-reprository-practical-9
-This reprository for learning Git and Github
-## Practice 9
+# FocusTime
 
-This repository was created to learn Git and GitHub.
+A Pomodoro timer with a simple task list for students. It runs fully in the
+browser: no server, no build step, data stays in `localStorage`.
 
-Topics:
-- Repository creation
-- Commits
-- Branches
-- Push and pull
-- Cloning
+## Run
+
+Open `index.html` in a browser, or serve the folder:
+
+```sh
+python3 -m http.server 8000   # then open http://localhost:8000
+```
+
+Add `?fast` to the URL (`index.html?fast`) so minutes become seconds, which
+makes testing quicker.
+
+## Structure
+
+```
+js/core/       config + storage adapter
+js/models/     Timer state machine, TaskStore (no DOM)
+js/services/   Notifier (sound, notifications, screen reader)
+js/ui/         TimerView, TaskView (rendering only)
+js/features/   Background picker (self-contained, used on every page)
+js/app.js      controller – wires everything together
+docs/          architecture document and diagrams
+```
+
+## Documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – architecture diagram, component
+  responsibilities, interactions and design decisions
+- [docs/MVP.md](docs/MVP.md) – product backlog, MVP definition and the plan for
+  the first iteration
