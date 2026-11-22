@@ -21,14 +21,23 @@ const TimerView = (() => {
     );
   }
 
+  /* Time goes first so it stays visible when the browser shortens the tab.
+     A paused session keeps its time (marked ⏸) so it can still be checked
+     from another tab; an idle timer shows just the app name. */
+  function tabTitle(text, label, running, paused) {
+    if (running) return `${text} – ${label} · FocusTime`;
+    if (paused) return `⏸ ${text} – ${label} · FocusTime`;
+    return 'FocusTime';
+  }
+
   /* Called every tick (~4×/s): only touches the cheap, fast-changing parts. */
-  function renderTime({ remainingMs, durationMs, label, running }) {
+  function renderTime({ remainingMs, durationMs, label, running, paused }) {
     const text = fmt(remainingMs);
     els.time.textContent = text;
     els.time.setAttribute('aria-label', `${label}: ${text} remaining`);
     const pct = 100 - (remainingMs / durationMs) * 100;
     els.progress.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-    document.title = running ? `${text} – ${label} · FocusTime` : 'FocusTime';
+    document.title = tabTitle(text, label, running, paused);
   }
 
   /* Called on state changes (start, pause, mode switch, task change). */

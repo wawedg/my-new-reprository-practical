@@ -64,6 +64,7 @@
       durationMs: Timer.duration(),
       label: Timer.LABELS[mode],
       running: Timer.isRunning(),
+      paused: !Timer.isRunning() && !Timer.isFresh(),
     });
   }
 
