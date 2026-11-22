@@ -7,6 +7,7 @@ const Config = (() => {
     typeof location !== 'undefined' && new URLSearchParams(location.search).has('fast');
   const UNIT = fast ? 1000 : 60 * 1000;
 
+<<<<<<< HEAD
   const MINUTES = Object.freeze({ focus: 25, short: 5, long: 15 });
 
   return Object.freeze({
@@ -16,6 +17,10 @@ const Config = (() => {
       short: MINUTES.short * UNIT,
       long: MINUTES.long * UNIT,
     }),
+=======
+  return Object.freeze({
+    DURATIONS: Object.freeze({ focus: 25 * UNIT, short: 5 * UNIT, long: 15 * UNIT }),
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
     LABELS: Object.freeze({ focus: 'Focus', short: 'Short Break', long: 'Long Break' }),
     LONG_BREAK_EVERY: 4,
     TICK_MS: 250,

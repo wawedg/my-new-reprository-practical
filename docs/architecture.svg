@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>FocusTime – component architecture</title>
+  <style>
+    .bg { fill: #ffffff; }
+    .band { fill: #f6f3ec; stroke: #d9d2c3; }
+    .band-alt { fill: #eef3f1; stroke: #c9d8d2; }
+    .slice { fill: #f3eef8; stroke: #cdbfdc; stroke-dasharray: 6 4; }
+    .layer { font-size: 13px; font-weight: 700; fill: #4a3426; }
+    .layer-sub { font-size: 11px; fill: #7a6a5c; font-family: ui-monospace, Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #4a3426; stroke-width: 1.5; }
+    .box-ctrl { fill: #fff4dc; stroke: #b45309; stroke-width: 2; }
+    .box-ext { fill: #ececec; stroke: #888; stroke-dasharray: 4 3; }
+    .name { font-size: 14px; font-weight: 700; fill: #2d241b; }
+    .file { font-size: 11px; fill: #6b5b4d; font-family: ui-monospace, Menlo, Consolas, monospace; }
+    .edge { stroke: #4a3426; stroke-width: 1.4; fill: none; }
+    .edge-evt { stroke: #b45309; stroke-width: 1.4; fill: none; stroke-dasharray: 5 3; }
+    .lbl { font-size: 11px; fill: #4a3426; }
+    .lbl-evt { font-size: 11px; fill: #b45309; }
+    .arrow { fill: #4a3426; }
+    .arrow-evt { fill: #b45309; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #1b1814; }
+      .band { fill: #26211b; stroke: #4a4033; }
+      .band-alt { fill: #1f2725; stroke: #3c4d47; }
+      .slice { fill: #252030; stroke: #5b4f6e; }
+      .layer { fill: #f0e2cc; } .layer-sub { fill: #b8a894; }
+      .box { fill: #2d2720; stroke: #d9c4a6; }
+      .box-ctrl { fill: #3a2a12; stroke: #f0a040; }
+      .box-ext { fill: #2a2a2a; stroke: #888; }
+      .name { fill: #f6ead8; } .file { fill: #c4b29c; }
+      .edge { stroke: #d9c4a6; } .lbl { fill: #e0cfb6; } .arrow { fill: #d9c4a6; }
+      .edge-evt { stroke: #f0a040; } .lbl-evt { fill: #f0a040; } .arrow-evt { fill: #f0a040; }
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow-evt" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+
+  <rect class="bg" width="960" height="700"/>
+
+  <!-- ===== Layer bands ===== -->
+  <rect class="band-alt" x="20" y="20" width="920" height="72" rx="8"/>
+  <text class="layer" x="34" y="50">Pages</text>
+  <text class="layer-sub" x="34" y="68">*.html, css/</text>
+
+  <rect class="band" x="20" y="110" width="690" height="92" rx="8"/>
+  <text class="layer" x="34" y="148">Presentation</text>
+  <text class="layer-sub" x="34" y="166">js/ui/</text>
+
+  <rect class="band" x="20" y="222" width="690" height="92" rx="8"/>
+  <text class="layer" x="34" y="260">Application</text>
+  <text class="layer-sub" x="34" y="278">js/app.js</text>
+
+  <rect class="band" x="20" y="334" width="690" height="92" rx="8"/>
+  <text class="layer" x="34" y="372">Domain</text>
+  <text class="layer-sub" x="34" y="390">js/models/</text>
+
+  <rect class="band" x="20" y="446" width="690" height="92" rx="8"/>
+  <text class="layer" x="34" y="478">Services</text>
+  <text class="layer" x="34" y="494">&amp; Core</text>
+  <text class="layer-sub" x="34" y="512">js/services/</text>
+  <text class="layer-sub" x="34" y="526">js/core/</text>
+
+  <rect class="band-alt" x="20" y="566" width="920" height="92" rx="8"/>
+  <text class="layer" x="34" y="604">Browser</text>
+  <text class="layer" x="34" y="620">platform</text>
+
+  <rect class="slice" x="728" y="110" width="212" height="428" rx="8"/>
+  <text class="layer" x="742" y="132">Feature slice</text>
+  <text class="layer-sub" x="742" y="148">js/features/</text>
+
+  <!-- ===== Pages ===== -->
+  <rect class="box" x="200" y="34" width="170" height="44" rx="6"/>
+  <text class="name" x="285" y="54" text-anchor="middle">Student</text>
+  <text class="file" x="285" y="70" text-anchor="middle">(actor, web browser)</text>
+
+  <rect class="box" x="470" y="34" width="170" height="44" rx="6"/>
+  <text class="name" x="555" y="54" text-anchor="middle">Timer page</text>
+  <text class="file" x="555" y="70" text-anchor="middle">index.html</text>
+
+  <rect class="box" x="760" y="34" width="160" height="44" rx="6"/>
+  <text class="name" x="840" y="54" text-anchor="middle">About page</text>
+  <text class="file" x="840" y="70" text-anchor="middle">about.html</text>
+
+  <path class="edge" d="M370 56 H466" marker-end="url(#a)"/>
+  <path class="edge" d="M640 56 H756" marker-end="url(#a)"/>
+  <text class="lbl" x="418" y="50" text-anchor="middle">uses</text>
+  <text class="lbl" x="698" y="50" text-anchor="middle">link</text>
+
+  <!-- ===== Presentation ===== -->
+  <rect class="box" x="210" y="128" width="200" height="56" rx="6"/>
+  <text class="name" x="310" y="151" text-anchor="middle">TimerView</text>
+  <text class="file" x="310" y="169" text-anchor="middle">ui/timer-view.js</text>
+
+  <rect class="box" x="470" y="128" width="200" height="56" rx="6"/>
+  <text class="name" x="570" y="151" text-anchor="middle">TaskView</text>
+  <text class="file" x="570" y="169" text-anchor="middle">ui/task-view.js</text>
+
+  <!-- ===== Application ===== -->
+  <rect class="box-ctrl" x="290" y="240" width="300" height="56" rx="6"/>
+  <text class="name" x="440" y="263" text-anchor="middle">App controller</text>
+  <text class="file" x="440" y="281" text-anchor="middle">app.js · owns activeTaskId</text>
+
+  <!-- ===== Domain ===== -->
+  <rect class="box" x="210" y="352" width="200" height="56" rx="6"/>
+  <text class="name" x="310" y="375" text-anchor="middle">Timer</text>
+  <text class="file" x="310" y="393" text-anchor="middle">models/timer.js</text>
+
+  <rect class="box" x="470" y="352" width="200" height="56" rx="6"/>
+  <text class="name" x="570" y="375" text-anchor="middle">TaskStore</text>
+  <text class="file" x="570" y="393" text-anchor="middle">models/task-store.js</text>
+
+  <!-- ===== Services & Core ===== -->
+  <rect class="box" x="175" y="464" width="150" height="56" rx="6"/>
+  <text class="name" x="250" y="487" text-anchor="middle">Notifier</text>
+  <text class="file" x="250" y="505" text-anchor="middle">services/notifier.js</text>
+
+  <rect class="box" x="365" y="464" width="140" height="56" rx="6"/>
+  <text class="name" x="435" y="487" text-anchor="middle">Config</text>
+  <text class="file" x="435" y="505" text-anchor="middle">core/config.js</text>
+
+  <rect class="box" x="530" y="464" width="150" height="56" rx="6"/>
+  <text class="name" x="605" y="487" text-anchor="middle">Storage</text>
+  <text class="file" x="605" y="505" text-anchor="middle">core/storage.js</text>
+
+  <!-- ===== Feature slice ===== -->
+  <rect class="box" x="748" y="200" width="172" height="70" rx="6"/>
+  <text class="name" x="834" y="225" text-anchor="middle">Background</text>
+  <text class="file" x="834" y="243" text-anchor="middle">features/background.js</text>
+  <text class="file" x="834" y="259" text-anchor="middle">state + picker panel</text>
+
+  <!-- ===== Platform ===== -->
+  <rect class="box-ext" x="175" y="584" width="230" height="56" rx="6"/>
+  <text class="name" x="290" y="607" text-anchor="middle">Web Audio · Notifications</text>
+  <text class="file" x="290" y="625" text-anchor="middle">aria-live region</text>
+
+  <rect class="box-ext" x="520" y="584" width="170" height="56" rx="6"/>
+  <text class="name" x="605" y="607" text-anchor="middle">localStorage</text>
+  <text class="file" x="605" y="625" text-anchor="middle">focustime.* keys</text>
+
+  <rect class="box-ext" x="760" y="584" width="160" height="56" rx="6"/>
+  <text class="name" x="840" y="607" text-anchor="middle">Unsplash CDN</text>
+  <text class="file" x="840" y="625" text-anchor="middle">images.unsplash.com</text>
+
+  <!-- ===== Edges ===== -->
+  <!-- pages load the code -->
+  <path class="edge" d="M555 78 V100 H440 V236" marker-end="url(#a)"/>
+  <text class="lbl" x="448" y="118">loads scripts</text>
+  <path class="edge" d="M840 78 V196" marker-end="url(#a)"/>
+  <text class="lbl" x="846" y="176">loads</text>
+
+  <!-- controller ⇄ views -->
+  <path class="edge" d="M330 236 V188" marker-end="url(#a)"/>
+  <path class="edge-evt" d="M370 188 V236" marker-end="url(#e)"/>
+  <path class="edge" d="M550 236 V188" marker-end="url(#a)"/>
+  <path class="edge-evt" d="M510 188 V236" marker-end="url(#e)"/>
+  <text class="lbl" x="296" y="216" text-anchor="end">render(data)</text>
+  <text class="lbl-evt" x="604" y="216">handler callbacks</text>
+
+  <!-- controller ⇄ models -->
+  <path class="edge" d="M330 300 V348" marker-end="url(#a)"/>
+  <path class="edge-evt" d="M370 348 V300" marker-end="url(#e)"/>
+  <path class="edge" d="M550 300 V348" marker-end="url(#a)"/>
+  <text class="lbl" x="296" y="328" text-anchor="end">start/pause/reset</text>
+  <text class="lbl-evt" x="376" y="322">tick · change</text>
+  <text class="lbl-evt" x="376" y="335">· complete</text>
+  <text class="lbl" x="558" y="328">add · toggle · rename · remove</text>
+
+  <!-- controller → notifier -->
+  <path class="edge" d="M290 268 H190 V460" marker-end="url(#a)"/>
+  <text class="lbl" x="196" y="440">bell / notify / announce</text>
+
+  <!-- controller → storage (saveState) -->
+  <path class="edge" d="M446 300 V440 H580 V460" marker-end="url(#a)"/>
+  <text class="lbl" x="453" y="434">saveState</text>
+
+  <!-- models → core -->
+  <path class="edge" d="M310 408 V430 H400 V460" marker-end="url(#a)"/>
+  <text class="lbl" x="316" y="424">durations</text>
+  <path class="edge" d="M630 408 V460" marker-end="url(#a)"/>
+  <text class="lbl" x="636" y="440">saveTasks</text>
+
+  <!-- background slice -->
+  <path class="edge" d="M800 270 V492 H684" marker-end="url(#a)"/>
+  <text class="lbl" x="806" y="400">own key</text>
+  <path class="edge" d="M870 270 V580" marker-end="url(#a)"/>
+  <text class="lbl" x="876" y="430">photos</text>
+
+  <!-- core/services → platform -->
+  <path class="edge" d="M250 520 V580" marker-end="url(#a)"/>
+  <path class="edge" d="M605 520 V580" marker-end="url(#a)"/>
+
+  <!-- ===== Legend ===== -->
+  <path class="edge" d="M200 684 H240" marker-end="url(#a)"/>
+  <text class="lbl" x="248" y="688">direct call / dependency</text>
+  <path class="edge-evt" d="M420 684 H460" marker-end="url(#e)"/>
+  <text class="lbl-evt" x="468" y="688">callback / event (inversion of control)</text>
+  <rect class="box-ext" x="700" y="677" width="24" height="14" rx="3"/>
+  <text class="lbl" x="732" y="688">external (browser / network)</text>
+</svg>

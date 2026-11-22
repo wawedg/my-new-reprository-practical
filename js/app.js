@@ -79,7 +79,11 @@
         TaskStore.addPomodoro(activeTaskId);
         renderTasks();
       }
+<<<<<<< HEAD
       const breakName = `${Timer.LABELS[next].toLowerCase()} (${Config.MINUTES[next]} min)`;
+=======
+      const breakName = next === 'long' ? 'long break (15 min)' : 'short break (5 min)';
+>>>>>>> d6a34b35e813785580e7153f4147656f91cc97da
       Notifier.desktop('Pomodoro complete! ⏳', `Time for a ${breakName}.`);
       Notifier.announce(`Pomodoro complete. Time for a ${breakName}.`);
     } else {
