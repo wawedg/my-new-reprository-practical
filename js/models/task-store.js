@@ -68,5 +68,19 @@ const TaskStore = (() => {
     save();
   }
 
-  return { load, all, active, completed, get, add, rename, toggleComplete, remove, addPomodoro };
+  /* Returns a sorted copy of `list` (never reorders the stored tasks).
+     'alpha': lexicographic by title, case- and accent-insensitive, with
+     creation time as the tie-breaker so equal titles keep a stable order.
+     'created' (default): the order tasks were added. */
+  const SORT_ORDERS = ['created', 'alpha'];
+  const byCreated = (a, b) => (a.createdAt || 0) - (b.createdAt || 0);
+  const byTitle = (a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }) || byCreated(a, b);
+
+  function sort(list, order) {
+    const copy = list.slice();
+    return order === 'alpha' ? copy.sort(byTitle) : copy;
+  }
+
+  return { load, all, active, completed, get, add, rename, toggleComplete, remove, addPomodoro, sort, SORT_ORDERS };
 })();

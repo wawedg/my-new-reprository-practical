@@ -327,7 +327,23 @@ body.is-running .lg-stream { animation: trickle 1.2s ease-in-out infinite; }
 .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 
 /* ---------- Tasks ---------- */
-.tasks-card h2 { margin: 0 0 16px; }
+.tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.tasks-card h2 { margin: 0; }
+.task-sort { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; color: var(--muted); }
+.task-sort select {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
 
 .task-form { display: flex; gap: 8px; }
 .task-form input {

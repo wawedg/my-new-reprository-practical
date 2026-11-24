@@ -57,7 +57,16 @@
     </section>
 
     <section class="card tasks-card" aria-labelledby="tasks-heading">
-      <h2 id="tasks-heading">Tasks</h2>
+      <div class="tasks-header">
+        <h2 id="tasks-heading">Tasks</h2>
+        <label class="task-sort">
+          <span>Sort</span>
+          <select id="task-sort">
+            <option value="created">Date added</option>
+            <option value="alpha">A–Z</option>
+          </select>
+        </label>
+      </div>
 
       <form id="task-form" class="task-form" novalidate>
         <label for="task-input" class="visually-hidden">New task</label>

@@ -4,6 +4,7 @@
 const Storage = (() => {
   const TASKS_KEY = 'focustime.tasks';
   const STATE_KEY = 'focustime.state';
+  const SORT_KEY = 'focustime.sort';
 
   function read(key, fallback) {
     try {
@@ -41,5 +42,7 @@ const Storage = (() => {
     saveTasks: (tasks) => write(TASKS_KEY, tasks),
     loadState: () => read(STATE_KEY, null),
     saveState: (state) => write(STATE_KEY, state),
+    loadSort: () => read(SORT_KEY, null),
+    saveSort: (order) => write(SORT_KEY, order),
   };
 })();

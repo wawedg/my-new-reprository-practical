@@ -16,10 +16,14 @@
   const form = $('task-form');
   const input = $('task-input');
   const formError = $('task-error');
+  const sortSelect = $('task-sort');
 
   /* Which task the current pomodoro counts towards. Lives here because it
      links the two models (Timer and TaskStore) without coupling them. */
   let activeTaskId = null;
+
+  /* How both task lists are ordered ('created' or 'alpha'); remembered across visits. */
+  let sortOrder = TaskStore.SORT_ORDERS.includes(Storage.loadSort()) ? Storage.loadSort() : 'created';
 
   /* ---------- Persistence ---------- */
 
@@ -44,7 +48,10 @@
   function renderTasks() {
     TaskView.render(
       taskEls,
-      { open: TaskStore.active(), done: TaskStore.completed() },
+      {
+        open: TaskStore.sort(TaskStore.active(), sortOrder),
+        done: TaskStore.sort(TaskStore.completed(), sortOrder),
+      },
       activeTaskId,
       taskHandlers,
       { locked: Timer.isRunning() }
@@ -189,6 +196,13 @@
   });
 
   input.addEventListener('input', () => (formError.hidden = true));
+
+  sortSelect.value = sortOrder;
+  sortSelect.addEventListener('change', () => {
+    sortOrder = sortSelect.value;
+    Storage.saveSort(sortOrder);
+    renderTasks();
+  });
 
   /* ---------- Boot ---------- */
 

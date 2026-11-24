@@ -149,3 +149,13 @@ test('Timer: finishes on time even when the interval is throttled (hidden tab)',
   assert.equal(info[0].restored, false);
   assert.ok(!Timer.isRunning());
 });
+
+test('TaskStore: sort orders by title (case-insensitive) without mutating the store', () => {
+  const { TaskStore } = loadModels();
+  TaskStore.load();
+  ['banana', 'Apple', 'cherry', 'apple'].forEach((t) => TaskStore.add(t));
+  const titles = (list) => Array.from(list, (t) => t.title);
+  assert.deepEqual(titles(TaskStore.sort(TaskStore.all(), 'alpha')), ['Apple', 'apple', 'banana', 'cherry']);
+  assert.deepEqual(titles(TaskStore.sort(TaskStore.all(), 'created')), ['banana', 'Apple', 'cherry', 'apple']);
+  assert.deepEqual(titles(TaskStore.all()), ['banana', 'Apple', 'cherry', 'apple'], 'stored order unchanged');
+});
