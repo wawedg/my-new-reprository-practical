@@ -41,7 +41,7 @@ const TaskView = (() => {
     input.addEventListener('blur', () => finish(true));
   }
 
-  function renderItem(task, activeId, h) {
+  function renderItem(task, activeId, h, locked) {
     const li = document.createElement('li');
     li.className = 'task';
     if (task.completed) li.classList.add('is-done');
@@ -59,7 +59,7 @@ const TaskView = (() => {
     const title = document.createElement('span');
     title.className = 'task-title';
     title.textContent = task.title;
-    if (!task.completed) {
+    if (!task.completed && !locked) {
       title.title = 'Double-click to edit';
       title.addEventListener('dblclick', () => startEditing(li, task, h.onRename));
     }
@@ -77,8 +77,9 @@ const TaskView = (() => {
       const focusBtn = button(
         'btn btn-small' + (isActive ? ' btn-selected' : ''),
         isActive ? 'Focusing' : 'Focus',
-        (isActive ? 'Currently focusing on ' : 'Focus on ') + task.title
+        (isActive ? 'Stop focusing on ' : 'Focus on ') + task.title
       );
+      focusBtn.title = isActive ? 'Click to stop focusing on this task' : 'Focus on this task and start the timer';
       focusBtn.setAttribute('aria-pressed', String(isActive));
       focusBtn.addEventListener('click', () => h.onFocus(task.id));
       actions.append(focusBtn);
@@ -86,7 +87,12 @@ const TaskView = (() => {
 
     if (!task.completed) {
       const editBtn = button('btn btn-icon', '✎', 'Edit ' + task.title);
-      editBtn.addEventListener('click', () => startEditing(li, task, h.onRename));
+      if (locked) {
+        editBtn.disabled = true;
+        editBtn.title = 'Tasks cannot be edited while the timer is running';
+      } else {
+        editBtn.addEventListener('click', () => startEditing(li, task, h.onRename));
+      }
       actions.append(editBtn);
     }
 
@@ -99,11 +105,12 @@ const TaskView = (() => {
   }
 
   /* Renders both lists from plain data. `open`/`done` are task arrays from
-     TaskStore; user actions are reported through `handlers` (the controller). */
-  function render({ activeList, completedList, activeEmpty, completedEmpty, activeCount, completedCount }, { open, done }, activeId, handlers) {
+     TaskStore; user actions are reported through `handlers` (the controller).
+     options.locked disables title editing (used while the timer is running). */
+  function render({ activeList, completedList, activeEmpty, completedEmpty, activeCount, completedCount }, { open, done }, activeId, handlers, { locked = false } = {}) {
 
-    activeList.replaceChildren(...open.map((t) => renderItem(t, activeId, handlers)));
-    completedList.replaceChildren(...done.map((t) => renderItem(t, activeId, handlers)));
+    activeList.replaceChildren(...open.map((t) => renderItem(t, activeId, handlers, locked)));
+    completedList.replaceChildren(...done.map((t) => renderItem(t, activeId, handlers, locked)));
 
     activeEmpty.hidden = open.length > 0;
     completedEmpty.hidden = done.length > 0;

@@ -46,7 +46,8 @@
       taskEls,
       { open: TaskStore.active(), done: TaskStore.completed() },
       activeTaskId,
-      taskHandlers
+      taskHandlers,
+      { locked: Timer.isRunning() }
     );
   }
 
@@ -69,7 +70,8 @@
   }
 
   function onTimerChange() {
-    renderTimer();
+    // Task rows depend on the running state too (editing is locked while running).
+    renderAll();
     saveState();
   }
 
@@ -122,15 +124,39 @@
       renderAll();
       saveState();
     },
+    /* Focus toggles: picking a task starts a focus session on it, clicking the
+       already-focused task deselects it and pauses its running focus session. */
     onFocus(id) {
       const task = TaskStore.get(id);
       if (!task || task.completed) return;
+      const { mode } = Timer.getState();
+
+      if (activeTaskId === id) {
+        activeTaskId = null;
+        if (mode === 'focus' && Timer.isRunning()) Timer.pause();
+        renderAll();
+        saveState();
+        Notifier.announce(`Stopped focusing on ${task.title}`);
+        return;
+      }
+
       activeTaskId = id;
+      // A running session (focus or break) is left alone: switching task mid-
+      // session just moves the credit, and a break is not cut short.
+      if (!Timer.isRunning()) {
+        if (mode !== 'focus') Timer.setMode('focus');
+        Notifier.unlock();
+        Timer.start();
+      }
       renderAll();
       saveState();
       Notifier.announce(`Now focusing on ${task.title}`);
     },
     onRename(id, title) {
+      if (Timer.isRunning()) {
+        renderAll(); // discard the edit and restore the title
+        return;
+      }
       TaskStore.rename(id, title);
       renderAll();
     },
@@ -187,6 +213,6 @@
     const t = TaskStore.get(saved.activeTaskId);
     if (t && !t.completed) activeTaskId = t.id;
   }
-  renderTasks();
+  // Timer.init emits a change, which renders the tasks as well.
   Timer.init(saved, { tick: onTick, change: onTimerChange, complete: onTimerComplete });
 })();

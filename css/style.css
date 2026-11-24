@@ -395,6 +395,7 @@ body.is-running .lg-stream { animation: trickle 1.2s ease-in-out infinite; }
 }
 
 .task-title { grid-area: title; overflow-wrap: anywhere; cursor: text; }
+.is-running .task-title { cursor: default; }
 .task-edit {
   grid-area: title;
   min-width: 0;
