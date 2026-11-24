@@ -82,5 +82,15 @@ const TaskStore = (() => {
     return order === 'alpha' ? copy.sort(byTitle) : copy;
   }
 
-  return { load, all, active, completed, get, add, rename, toggleComplete, remove, addPomodoro, sort, SORT_ORDERS };
+  /* Returns the tasks in `list` whose title contains `query`, ignoring case
+     and accents. A blank query matches everything. */
+  const fold = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+  function search(list, query) {
+    const q = fold(String(query || '').trim());
+    if (!q) return list.slice();
+    return list.filter((t) => fold(t.title).includes(q));
+  }
+
+  return { load, all, active, completed, get, add, rename, toggleComplete, remove, addPomodoro, sort, search, SORT_ORDERS };
 })();

@@ -159,3 +159,14 @@ test('TaskStore: sort orders by title (case-insensitive) without mutating the st
   assert.deepEqual(titles(TaskStore.sort(TaskStore.all(), 'created')), ['banana', 'Apple', 'cherry', 'apple']);
   assert.deepEqual(titles(TaskStore.all()), ['banana', 'Apple', 'cherry', 'apple'], 'stored order unchanged');
 });
+
+test('TaskStore: search matches titles case- and accent-insensitively', () => {
+  const { TaskStore } = loadModels();
+  TaskStore.load();
+  ['Read chapter 3', 'Café notes', 'Math homework'].forEach((t) => TaskStore.add(t));
+  const titles = (list) => Array.from(list, (t) => t.title);
+  assert.deepEqual(titles(TaskStore.search(TaskStore.all(), 'CHAP')), ['Read chapter 3']);
+  assert.deepEqual(titles(TaskStore.search(TaskStore.all(), 'cafe')), ['Café notes']);
+  assert.deepEqual(titles(TaskStore.search(TaskStore.all(), 'zzz')), []);
+  assert.equal(TaskStore.search(TaskStore.all(), '   ').length, 3, 'blank query matches all');
+});

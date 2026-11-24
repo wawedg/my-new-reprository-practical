@@ -17,6 +17,11 @@
   const input = $('task-input');
   const formError = $('task-error');
   const sortSelect = $('task-sort');
+  const searchBtn = $('search-btn');
+  const emptyText = {
+    active: taskEls.activeEmpty.textContent,
+    completed: taskEls.completedEmpty.textContent,
+  };
 
   /* Which task the current pomodoro counts towards. Lives here because it
      links the two models (Timer and TaskStore) without coupling them. */
@@ -24,6 +29,9 @@
 
   /* How both task lists are ordered ('created' or 'alpha'); remembered across visits. */
   let sortOrder = TaskStore.SORT_ORDERS.includes(Storage.loadSort()) ? Storage.loadSort() : 'created';
+
+  /* Text the task lists are filtered by; '' means no search is applied. */
+  let searchQuery = '';
 
   /* ---------- Persistence ---------- */
 
@@ -49,14 +57,46 @@
     TaskView.render(
       taskEls,
       {
-        open: TaskStore.sort(TaskStore.active(), sortOrder),
-        done: TaskStore.sort(TaskStore.completed(), sortOrder),
+        open: TaskStore.sort(TaskStore.search(TaskStore.active(), searchQuery), sortOrder),
+        done: TaskStore.sort(TaskStore.search(TaskStore.completed(), searchQuery), sortOrder),
       },
       activeTaskId,
       taskHandlers,
       { locked: Timer.isRunning() }
     );
+    const noMatch = searchQuery ? 'No tasks match your search.' : null;
+    taskEls.activeEmpty.textContent = noMatch || emptyText.active;
+    taskEls.completedEmpty.textContent = noMatch || emptyText.completed;
   }
+
+  /* ---------- Search ---------- */
+
+  function setSearch(query) {
+    searchQuery = query;
+    const searching = Boolean(query);
+    searchBtn.textContent = searching ? 'Clear' : 'Search';
+    searchBtn.setAttribute('aria-pressed', String(searching));
+    searchBtn.title = searching ? `Clear the search for "${query}"` : 'Show only tasks containing the typed text';
+    renderTasks();
+  }
+
+  searchBtn.addEventListener('click', () => {
+    if (searchQuery) {
+      input.value = '';
+      setSearch('');
+      Notifier.announce('Search cleared');
+      input.focus();
+      return;
+    }
+    const query = input.value.trim();
+    if (!query) {
+      alert('Please type something to search for.');
+      input.focus();
+      return;
+    }
+    formError.hidden = true;
+    setSearch(query);
+  });
 
   function renderAll() {
     renderTasks();
@@ -187,6 +227,8 @@
     }
     formError.hidden = true;
     input.value = '';
+    // Drop any search so the new task is not hidden by the filter.
+    if (searchQuery) setSearch('');
     // Make the first task the active one automatically.
     if (!activeTaskId) {
       activeTaskId = task.id;
